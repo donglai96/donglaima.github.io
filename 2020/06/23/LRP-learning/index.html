@@ -20,30 +20,39 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="Be a part of it.">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Donglai&#39;s Blog">
-<meta property="og:url" content="http://yoursite.com/index.html">
+  <meta name="description" content="今天seminar 一个好像是UW毕业的小姐姐AP讲的是把每年的全球global温度和降水 学习一下，然后通过LRP可以看出需要关注地球的什么位置。LRP之前就听说过但是没有用过，感觉以后应该会用到，今天晚上看看实际学习操作一下。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LRP_learning">
+<meta property="og:url" content="http://yoursite.com/2020/06/23/LRP-learning/index.html">
 <meta property="og:site_name" content="Donglai&#39;s Blog">
-<meta property="og:description" content="Be a part of it.">
+<meta property="og:description" content="今天seminar 一个好像是UW毕业的小姐姐AP讲的是把每年的全球global温度和降水 学习一下，然后通过LRP可以看出需要关注地球的什么位置。LRP之前就听说过但是没有用过，感觉以后应该会用到，今天晚上看看实际学习操作一下。">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://yoursite.com/2020/06/23/LRP-learning/image-20200212203554419.png">
+<meta property="og:image" content="http://yoursite.com/2020/06/23/LRP-learning/train.png">
+<meta property="og:image" content="http://yoursite.com/2020/06/23/LRP-learning/image-20200212220636748.png">
+<meta property="og:image" content="http://yoursite.com/2020/06/23/LRP-learning/image-20200212221801992.png">
+<meta property="article:published_time" content="2020-06-23T19:40:49.000Z">
+<meta property="article:modified_time" content="2020-06-23T20:15:23.077Z">
 <meta property="article:author" content="Donglai">
+<meta property="article:tag" content="Machine Learning">
+<meta property="article:tag" content="Image Classification">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2020/06/23/LRP-learning/image-20200212203554419.png">
 
-<link rel="canonical" href="http://yoursite.com/">
+<link rel="canonical" href="http://yoursite.com/2020/06/23/LRP-learning/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : true,
-    isPost : false,
+    isHome : false,
+    isPost : true,
     lang   : 'en'
   };
 </script>
 
-  <title>Donglai's Blog</title>
+  <title>LRP_learning | Donglai's Blog</title>
   
 
 
@@ -156,9 +165,10 @@
         <div class="content-wrap">
           
 
-          <div class="content index posts-expand">
+          <div class="content post posts-expand">
             
-      
+
+    
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
@@ -174,10 +184,9 @@
       <meta itemprop="name" content="Donglai's Blog">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/06/23/LRP-learning/" class="post-title-link" itemprop="url">LRP_learning</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          LRP_learning
+        </h1>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -210,198 +219,70 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>今天seminar 一个好像是UW毕业的小姐姐AP讲的是把每年的全球global温度和降水 学习一下，然后通过LRP可以看出需要关注地球的什么位置。LRP之前就听说过但是没有用过，感觉以后应该会用到，今天晚上看看实际学习操作一下。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/06/23/LRP-learning/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
+        <p>今天seminar 一个好像是UW毕业的小姐姐AP讲的是把每年的全球global温度和降水 学习一下，然后通过LRP可以看出需要关注地球的什么位置。LRP之前就听说过但是没有用过，感觉以后应该会用到，今天晚上看看实际学习操作一下。</p>
+<a id="more"></a>
+<h2 id=""><a href="#" class="headerlink" title=" "></a> </h2><h2 id="什么是LRP"><a href="#什么是LRP" class="headerlink" title="什么是LRP"></a>什么是LRP</h2><h3 id="找论文"><a href="#找论文" class="headerlink" title="找论文"></a>找论文</h3><p>首先理解下什么是LRP。去找一下论文：<a href="https://arxiv.org/pdf/1604.00825.pdf" target="_blank" rel="noopener">https://arxiv.org/pdf/1604.00825.pdf</a> 这之前LRP就被提出来了，这篇文章是一个扩展。之前的那篇就没有细看。部分图片和解释参照了<a href="http://iphome.hhi.de/samek/pdf/MonXAI19.pdf" target="_blank" rel="noopener">http://iphome.hhi.de/samek/pdf/MonXAI19.pdf</a></p>
+<h3 id="Motivation-and-Introduction"><a href="#Motivation-and-Introduction" class="headerlink" title="Motivation and Introduction"></a>Motivation and Introduction</h3><p>LRP叫做 Layerwise-Relevance-Propagation</p>
+<img src="/2020/06/23/LRP-learning/image-20200212203554419.png" class="" title="image-20200212203554419">
+<p>我们已经训练好了一个网络，在这一层中，每一层的输出xj 都可以写成输入的函数 $x_{j}=g\left(\sum_{i} w_{i j} x_{i}+b\right)$， 然后给定一个图片，比如说是给定一个火车的图片，然后这个火车的图片分类的时候你已经知道它是一个火车了，你想观察这个网络为什么把它当成一个火车。<em>（我记得在本科的时候课上CNN的模型也能做出这种工作来，只不过他有很多池化层，不方便使用这种方法，今天seminar的时候我也问了她这个问题，她的回答大致就是不太容易之类的？）</em>Anyway， 神经网络是怎么看出这个图是火车的呢？</p>
+<img src="/2020/06/23/LRP-learning/train.png" class="" title="train">
+<p>大致就是这个样子。</p>
+<p>然后继续理解$f(x)$ 中，f代表我的神经网络，也就是分类器，x代表这张图片，那$f(x)$就代表分类的结果火车了，n然后我们可以有如下的表达式： $f(x) \approx \sum_{p} R_{p}^{(1)}$。 这里p就是代表所有的pixel 然后，$R_p$代表的就是每一个pixel的相关系数。然后就可以生成像这样的<em>heatmap</em>。</p>
+<p>那怎么得到这个$R_p$ 呢，可以看一下最上面这个图，思想和反向传播有点类似，如果我们已经知道了$l+1$层的相关系数，我们可以把第$l+1$层的信息分解那么就有$R_{j}^{(l+1)}=\sum_{i \in(l)} R_{i \leftarrow j}^{(l, l+1)}$，也就是说把后面一层的信息分解传给前面，这样的话就可以写出第$l$层的表达式$R_{i}^{(l)}=\sum_{j \in(l+1)} R_{i \hookleftarrow j}^{(l, l+1)}$。</p>
+<h3 id="Diving-into-detail"><a href="#Diving-into-detail" class="headerlink" title="Diving into detail"></a>Diving into detail</h3><p>从上面的两个equation就可以知道，只要我们定义出了$R_{i \leftarrow j}^{(l, l+1)}$这个传播方式，我们就能从最后一层传到第一层，那么怎么计算出这个传播方式呢？</p>
+<p>我们回去看最开始提出LRP的文章：</p>
+<p><a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4498753/" target="_blank" rel="noopener">https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4498753/</a></p>
+<p>emm有点长</p>
+<p>首先发现遗漏了一个明显但关键的信息，就是每一层的相关系数和都是相同的，这点很好理解。</p>
+<p>$f(x)=\cdots=\sum_{d \in l+1} R_{d}^{(l+1)}=\sum_{d \in l} R_{d}^{(l)}=\cdots=\sum_{d} R_{d}^{(1)}$</p>
+<p>文章里的推导还是挺好理解的，</p>
+<img src="/2020/06/23/LRP-learning/image-20200212220636748.png" class="" title="image-20200212220636748">
+<p>上图是我们的网络，在计算节点7的时候，是4,5,6节点传入的信息，通过$w_{47},w_{57},w_{67}$</p>
+<p>我们注意到$R_{7}^{(3)}=R_{4 \leftarrow 7}^{(2,3)}+R_{5 \pm 7}^{(2,3)}+R_{6 \pm 7}^{(2,3)}$</p>
+<p>那么就可以把 R_7 写成$R_{7}^{(3)}=R_{7}^{(3)} \frac{a_{4} w_{47}}{\sum_{i=4,5,6} a_{i} w_{i 7}}+R_{7}^{(3)} \frac{a_{5} w_{57}}{\sum_{i=4,5,6} a_{i} w_{i 7}}<br>+R_{7}^{(3)} \frac{a_{6} w_{67}}{\sum_{i=4,5,6} a_{i} w_{i 7}}$</p>
+<p>这样的形式，然后就有了定义 $R_{i \leftarrow k}^{(l, l+1)}=R_{k}^{(l+1)} \frac{a_{i} w_{i k}}{\sum_{h} a_{h} w_{h k}}$</p>
+<p>然后我们再回去看最开始的那篇文章的总结，就比较好理解了。</p>
+<p>在LRP 中，反向传播的结构就可以写成</p>
+<p>$R_{i \leftarrow j}^{(l, l+1)}=v_{i j} R_{j}^{l+1}$ with $\sum_{i} v_{i j}=1$</p>
+<p>然后定义了两种规则，第一种是$\epsilon - rule$，就是对应我们上面这个具体的例子，只不过加了一个$\epsilon$项，</p>
+<p>$R_{i \leftarrow j}^{(l, l+1)}=\frac{z_{i j}}{z_{j}+\epsilon \cdot \operatorname{sign}\left(z_{j}\right)} R_{j}^{(l+1)}$</p>
+<p>加它的目的是为了防止分母为0，然后还有各种别的定义</p>
+<img src="/2020/06/23/LRP-learning/image-20200212221801992.png" class="" title="image-20200212221801992">
+<p>好，那么LRP就大致理解了。在下一篇里将实际操作一下(可能没有下一篇了)</p>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ol>
+<li>Bach, Sebastian, et al. “On pixel-wise explanations for non-linear classifier decisions by layer-wise relevance propagation.” <em>PloS one</em> 10.7 (2015).</li>
+<li>Binder, Alexander, et al. “Layer-wise relevance propagation for neural networks with local renormalization layers.” <em>International Conference on Artificial Neural Networks</em>. Springer, Cham, 2016.</li>
+<li>Montavon, Grégoire, et al. “Layer-wise relevance propagation: an overview.” <em>Explainable AI: Interpreting, Explaining and Visualizing Deep Learning</em>. Springer, Cham, 2019. 193-209.</li>
+</ol>
+
     </div>
 
     
     
     
+
       <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
+          <div class="post-tags">
+              <a href="/tags/Machine-Learning/" rel="tag"># Machine Learning</a>
+              <a href="/tags/Image-Classification/" rel="tag"># Image Classification</a>
+          </div>
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/22/%E6%9D%82%E8%AE%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/donglai_3.png">
-      <meta itemprop="name" content="Donglai">
-      <meta itemprop="description" content="Be a part of it.">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Donglai's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/06/22/%E6%9D%82%E8%AE%B0/" class="post-title-link" itemprop="url">杂记</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-06-22 23:38:36" itemprop="dateCreated datePublished" datetime="2020-06-22T23:38:36-07:00">2020-06-22</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-06-23 13:19:46" itemprop="dateModified" datetime="2020-06-23T13:19:46-07:00">2020-06-23</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E9%9A%8F%E7%AC%94/" itemprop="url" rel="index"><span itemprop="name">随笔</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><em>写于20年2月3日</em></p>
-<p>过去的一周十分魔幻，国内疫情暴增，每天在网络上都有各种各样难以让人相信的事件发生，红十字会卖掉捐赠物品啊，美国停止和中国航班啊等等。然后就是科比去世，这部分我简略地写了一篇，以后希望能好好修改一下。还有就是老板让我写的NASA的proposal，这一周的前三天基本上就是在没日没夜的写这个东西，最后在周三的时候交了上去，我为我的生产力感到震惊，更被我老板的生产力感到震惊，他用两个小时几乎把我的每个句子改了一遍，然后他在周三的那天一共提交了四个proposal。。。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/06/22/%E6%9D%82%E8%AE%B0/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
         
-      
-    </div>
 
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/22/%E5%B9%B3%E5%8E%9F%E4%B8%8A%E7%9A%84%E6%91%A9%E8%A5%BF/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/donglai_3.png">
-      <meta itemprop="name" content="Donglai">
-      <meta itemprop="description" content="Be a part of it.">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Donglai's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/06/22/%E5%B9%B3%E5%8E%9F%E4%B8%8A%E7%9A%84%E6%91%A9%E8%A5%BF/" class="post-title-link" itemprop="url">平原上的摩西</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-06-22 23:07:49" itemprop="dateCreated datePublished" datetime="2020-06-22T23:07:49-07:00">2020-06-22</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-06-23 13:19:39" itemprop="dateModified" datetime="2020-06-23T13:19:39-07:00">2020-06-23</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E9%9A%8F%E7%AC%94/" itemprop="url" rel="index"><span itemprop="name">随笔</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <blockquote>
-<p>只要你的心够诚，海水都会为你分开，变成平原。</p>
-<p>​                                        —— 双雪涛 《平原上的摩西》</p>
-</blockquote>
-<p><em>写于2020年1月26日，美国疫情爆发前，农历鼠年</em></p>
-<p>农历鼠年的第一天亦或是第二天，周六，在家里把之前欠的程序写完了。巧合的是，其中的一个class的名字叫做ServerRat，取这个名字的本意是来自于一个实验室的美国小哥，那天受尽了server上数据的折磨，戏称自己是server rat，在服务器上无尽地奔跑，他说他想到这个名字是来自wwe的sewer rat？其实他不说wwe的话，我会认为这是个绝妙的比喻。Anyway， 我把自己获取server上数据的程序命名为ServerRat，祝所有人鼠年快乐，希望国内的亲人朋友们，不受蔓延的病毒影响，健健康康，开开心心。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/06/22/%E5%B9%B3%E5%8E%9F%E4%B8%8A%E7%9A%84%E6%91%A9%E8%A5%BF/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
         
-      
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/06/22/%E6%9D%82%E8%AE%B0/" rel="prev" title="杂记">
+      <i class="fa fa-chevron-left"></i> 杂记
+    </a></div>
+      <div class="post-nav-item"></div>
     </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
       </footer>
+    
   </article>
   
   
-  
-
-
   
 
 
@@ -454,6 +335,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#"><span class="nav-number">1.</span> <span class="nav-text"> </span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是LRP"><span class="nav-number">2.</span> <span class="nav-text">什么是LRP</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#找论文"><span class="nav-number">2.1.</span> <span class="nav-text">找论文</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Motivation-and-Introduction"><span class="nav-number">2.2.</span> <span class="nav-text">Motivation and Introduction</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Diving-into-detail"><span class="nav-number">2.3.</span> <span class="nav-text">Diving into detail</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文献"><span class="nav-number">3.</span> <span class="nav-text">参考文献</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
