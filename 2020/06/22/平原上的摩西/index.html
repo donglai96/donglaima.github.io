@@ -283,6 +283,7 @@
 
           </div>
           
+    <div class="comments" id="gitalk-container"></div>
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -531,6 +532,26 @@
   
 
   
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '7807102743034f5e9882',
+      clientSecret: 'c4d40610ffd0cb2437f97aed7b9324b9fba05b02',
+      repo        : 'https://github.com/donglai96/BlogComment',
+      owner       : 'donglai96',
+      admin       : ['donglai96'],
+      id          : 'e02fd918fc0dc9e69ef1a539c29c2fa7',
+        language: '',
+      distractionFreeMode: false
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
 
 </body>
 </html>
