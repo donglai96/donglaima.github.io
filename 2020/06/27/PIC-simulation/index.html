@@ -28,7 +28,7 @@
 <meta property="og:description" content="今天是2020年6.27日，开一个新的坑。每天抽出两到三个小时在暑假结束前把基本的PIC 模拟学习掌握好。">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-06-27T23:59:17.000Z">
-<meta property="article:modified_time" content="2020-06-28T00:05:49.927Z">
+<meta property="article:modified_time" content="2020-06-28T08:48:27.023Z">
 <meta property="article:author" content="Donglai">
 <meta property="article:tag" content="plasma">
 <meta property="article:tag" content="PIC">
@@ -189,10 +189,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2020-06-27 16:59:17 / Modified: 17:05:49" itemprop="dateCreated datePublished" datetime="2020-06-27T16:59:17-07:00">2020-06-27</time>
+              <time title="Created: 2020-06-27 16:59:17" itemprop="dateCreated datePublished" datetime="2020-06-27T16:59:17-07:00">2020-06-27</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-06-28 01:48:27" itemprop="dateModified" datetime="2020-06-28T01:48:27-07:00">2020-06-28</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -223,6 +229,66 @@
       
         <p>今天是2020年6.27日，开一个新的坑。每天抽出两到三个小时在暑假结束前把基本的PIC 模拟学习掌握好。</p>
 <a id="more"></a>
+<h2 id="6-27"><a href="#6-27" class="headerlink" title="6.27"></a>6.27</h2><p>今天的目标是首先把静电部分introduction 看完</p>
+<h3 id="Description-of-Spectral-Particle-in-Cell-Codes-from-the-UPIC-Framework"><a href="#Description-of-Spectral-Particle-in-Cell-Codes-from-the-UPIC-Framework" class="headerlink" title="Description of Spectral Particle-in-Cell Codes from the UPIC Framework"></a>Description of Spectral Particle-in-Cell Codes from the UPIC Framework</h3><h4 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h4><p>这个introduction主要讲了三种主要的code</p>
+<p>第一种就是静电的（electrostatic code）</p>
+<p>第二种就是电磁的</p>
+<p>第三种是Darwin模型，没咋听说过但是大致意思就是不包括推迟势(retardation effect) 和light waves</p>
+<p>其实可以理解的是当粒子速度远小于光速的时候这个就不是那么的重要了</p>
+<h4 id="静电等离子体模型-Electrostatic-Plasma-Model"><a href="#静电等离子体模型-Electrostatic-Plasma-Model" class="headerlink" title="静电等离子体模型(Electrostatic Plasma Model)"></a>静电等离子体模型(Electrostatic Plasma Model)</h4><p>静电模型只是解Poisson方程</p>
+<p>$\nabla \cdot E=4 \pi \rho$</p>
+<p>但是在网格计算中，粒子的位置的表述方法就是这样的：</p>
+<p>$\rho(\boldsymbol{x})=\sum_{i} q_{i} S\left(\boldsymbol{x}-\boldsymbol{x}_{i}\right)$</p>
+<p>那么S 就是粒子的形状函数，比如说对于单粒子来说（point particle是单粒子的意思还是点状粒子的意思需要接着的阅读？）x点来说只有一个粒子，那么正常来说应该S 是一个delta函数。<strong>但是在modeling里，一般都是一个extended shapes</strong>。因为解的时候需要用到Fourier 变换。 先来看一下他是怎么操作的，然后才能有更好的理解。</p>
+<ol>
+<li><p>首先要对电荷密度进行变换</p>
+<p>emm 还是首先复习一下傅里叶变换</p>
+<p>颅内复习了一下…</p>
+<p>复习完毕</p>
+<p>然后看charge density 的变换</p>
+<p>$\rho(\boldsymbol{k}, t)=\frac{1}{V} \int \sum_{i} q_{i} S\left(\boldsymbol{x}-\boldsymbol{x}_{i}(t)\right) e^{-i \boldsymbol{k} \cdot \boldsymbol{x}}d \boldsymbol{x}=\sum_{i} q_{i} S(\boldsymbol{k}) e^{-i \boldsymbol{k} \cdot \boldsymbol{x}_{i}(t)}$</p>
+<p>来观察这个非常优秀的式子，他给了我们很多信息。比如 当x是有维度的时候，我的频域也应该是有维度的</p>
+<p>同时这个式子还告诉了我们当$x_i$是t的函数的时候，应该怎么表示。</p>
+<p>再然后这个式子告诉我们说，当S 是delta函数的时候，积分后的表示形式是什么样的。</p>
+</li>
+<li><p>在Fourier space 里面解泊松方程</p>
+<p>$E(\boldsymbol{k})=\frac{-i \boldsymbol{k}}{k^{2}} 4 \pi \rho(\boldsymbol{k})$</p>
+<p>这个式子颅内第一感觉不对，后来发现是对的，实际上应该写成$i\boldsymbol{k}E(\boldsymbol{k})= 4 \pi \rho(\boldsymbol{k}) $</p>
+<p>因为当你对泊松方程左边做傅里叶变换的时候 利用到傅里叶的微分性质就好了</p>
+</li>
+<li><p>将Fourier空间中的E 变到真实的空间</p>
+<p>因为都是对粒子的作用，最后需要知道电场在每个点上的值</p>
+<p>$\boldsymbol{E_S}\left(\boldsymbol{x}_{i}\right)=V \sum_{k=-\infty}^{\infty} \boldsymbol{E}(\boldsymbol{k}) S(\boldsymbol{k}) e^{i \boldsymbol{k} \cdot \boldsymbol{x} i}$</p>
+<p><em>这个地方有一点问题就是说 1 的式子是普适的还是只是delta的，我以为的是只是delta function 但好像并不是？</em></p>
+</li>
+</ol>
+<h4 id="网格计算motions"><a href="#网格计算motions" class="headerlink" title="网格计算motions"></a>网格计算motions</h4><p>最简单的两个式子</p>
+<p>$\boldsymbol{v}_{i}(t+\Delta t / 2)=\boldsymbol{v}_{i}(t-\Delta t / 2)+\frac{q_{i}}{m_{i}} \boldsymbol{E}_{s}\left(\boldsymbol{x}_{i}(t)\right) \Delta t$<br>$\boldsymbol{x}_{i}(t+\Delta t)=\boldsymbol{x}_{i}(t)+\boldsymbol{v}_{i}(t+\Delta t / 2) \Delta t$</p>
+<p>这里introduction的note上说的是，Commonly charge density 根据插值啥的从粒子的分布坐标（我认为就是xi的意思？）得到场，（这大概就是上一个part的步骤）然后来获得粒子位置处的作用力。</p>
+<p>所以</p>
+<p>$\rho(\boldsymbol{r})=\sum_{i} q_{i} \sum_{s^{\prime}} W\left(\boldsymbol{r}-\boldsymbol{x}_{i}\right) \delta_{r, s’}$</p>
+<p>这里的定义涉及到编程的知识，一点一点来</p>
+<ol>
+<li><p>首先是网格的定义，一般来说 我们会有$(N_x,N_y,N_z)$这样的网格定义，然后系统的长度为$(L_x,L_y,L_z)$ 那么我们就有网格的定义</p>
+<p>$\Delta_{x}=L_{x} / N_{x} \quad \Delta_{z}=L_{z} / N_{z} \quad \Delta_{z}=L_{z} / N_{z}$</p>
+</li>
+<li><p>$\boldsymbol{r}=\left(n \Delta_{x}, m \Delta_{y}, l \Delta_{z}\right) \quad \boldsymbol{s}^{\prime}=\left(n^{\prime}, m^{\prime}, l^{\prime}\right)$ 这里对于r的理解就是之前提到的，charge density is accumulated on a grid from the particle co-ordinates according to some interpolation scheme</p>
+<p>这里还没有操作，所以对$(n’,m’,l’)$不是很理解，一个直观的猜测是，代表了整个计算区域，也就是说只有当$\delta_{r, s^{\prime}}=\delta_{n, n’} \delta_{m, m^{\prime}} \delta_{l, l^{\prime}}$ 为1 的时候，我才去插值。 插值的方式就是W 了，这个就很好理解。有很多种插值方法，但是要注意的是，插值函数必须限制在某一个范围，也就是说，大于一定范围的值就不插了。</p>
+</li>
+</ol>
+<p>得到了网格的表示形式之后，我们就可以按照之前的方法来计算离散傅里叶变换了。</p>
+<p>首先是原来的密度在k域上的表达形式：</p>
+<p>$\rho(\boldsymbol{k})=\frac{1}{V} \int \sum_{i} q_{i} S\left(\boldsymbol{x}-\boldsymbol{x}_{i}(t)\right) e^{-i \boldsymbol{k} \cdot x} d \boldsymbol{x}$</p>
+<p>那么对应离散傅里叶的变换形式就是</p>
+<p>$\rho\left(\boldsymbol{k}^{\prime}\right)=\frac{1}{N} \sum_{r} \rho(\boldsymbol{r}) e^{-i \boldsymbol{k}^{\prime} \cdot \boldsymbol{r}} = \frac{1}{N} \sum_{r} \sum_{i} q_{i} W\left(\boldsymbol{r}-\boldsymbol{x}_{i}\right) e^{-i \boldsymbol{k’} \cdot r}$</p>
+<p>$\boldsymbol{k}^{\prime}=\left(\frac{2 \pi n^{\prime}}{L_{x}}, \frac{2 \pi m^{\prime}}{L_{y}}, \frac{2 \pi l^{\prime}}{L_{z}}\right)$</p>
+<p>用之前的结果顺下来，这里就很容易能理解了。</p>
+<h4 id="非物理的网格力"><a href="#非物理的网格力" class="headerlink" title="非物理的网格力"></a>非物理的网格力</h4><p>这里其实可以想象一下，当把均匀世界网格化后，场必然也会发生变化，对于那些小尺度的变化在transform之后，就会产生这种非物理的网格力。当然还是看一下是怎么推导出来的。</p>
+<p>首先对插值函数进行傅里叶变换，那么就有</p>
+<p>$W(\boldsymbol{x})=\sum_{k=-\infty}^{\infty} W(\boldsymbol{k}) e^{i k \cdot x} \quad W(\boldsymbol{k})=\frac{1}{V} \int W(\boldsymbol{x}) e^{-i k \cdot x} d \boldsymbol{x}$</p>
+<p>那么把之前离散傅里叶变换的密度中的插值函数代入，就有：</p>
+<p>$\rho\left(\boldsymbol{k}^{\prime}\right)=\frac{1}{N} \sum_{i} q_{i} \sum_{k=-\infty}^{\infty} W(\boldsymbol{k}) e^{-i \boldsymbol{k}\cdot x_{i}} \sum_{r} e^{i(\boldsymbol{k}-\boldsymbol{k’}) \cdot r}$（r 也是向量）</p>
+<p>今天看的有些慢了，但是一些对于基础知识的复习之后的明天再看</p>
 
     </div>
 
@@ -305,6 +371,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#6-27"><span class="nav-number">1.</span> <span class="nav-text">6.27</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Description-of-Spectral-Particle-in-Cell-Codes-from-the-UPIC-Framework"><span class="nav-number">1.1.</span> <span class="nav-text">Description of Spectral Particle-in-Cell Codes from the UPIC Framework</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Introduction"><span class="nav-number">1.1.1.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#静电等离子体模型-Electrostatic-Plasma-Model"><span class="nav-number">1.1.2.</span> <span class="nav-text">静电等离子体模型(Electrostatic Plasma Model)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#网格计算motions"><span class="nav-number">1.1.3.</span> <span class="nav-text">网格计算motions</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#非物理的网格力"><span class="nav-number">1.1.4.</span> <span class="nav-text">非物理的网格力</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
