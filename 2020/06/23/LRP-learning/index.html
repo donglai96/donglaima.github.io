@@ -237,11 +237,11 @@
       
         <p>今天seminar 一个好像是UW毕业的小姐姐AP讲的是把每年的全球global温度和降水 学习一下，然后通过LRP可以看出需要关注地球的什么位置。LRP之前就听说过但是没有用过，感觉以后应该会用到，今天晚上看看实际学习操作一下。</p>
 <a id="more"></a>
-<h2 id=""><a href="#" class="headerlink" title=" "></a> </h2><h2 id="什么是LRP"><a href="#什么是LRP" class="headerlink" title="什么是LRP"></a>什么是LRP</h2><h3 id="找论文"><a href="#找论文" class="headerlink" title="找论文"></a>找论文</h3><p>首先理解下什么是LRP。去找一下论文：<a href="https://arxiv.org/pdf/1604.00825.pdf" target="_blank" rel="noopener">https://arxiv.org/pdf/1604.00825.pdf</a> 这之前LRP就被提出来了，这篇文章是一个扩展。之前的那篇就没有细看。部分图片和解释参照了<a href="http://iphome.hhi.de/samek/pdf/MonXAI19.pdf" target="_blank" rel="noopener">http://iphome.hhi.de/samek/pdf/MonXAI19.pdf</a></p>
+<h2 id><a href="#" class="headerlink" title=" "></a> </h2><h2 id="什么是LRP"><a href="#什么是LRP" class="headerlink" title="什么是LRP"></a>什么是LRP</h2><h3 id="找论文"><a href="#找论文" class="headerlink" title="找论文"></a>找论文</h3><p>首先理解下什么是LRP。去找一下论文：<a href="https://arxiv.org/pdf/1604.00825.pdf" target="_blank" rel="noopener">https://arxiv.org/pdf/1604.00825.pdf</a> 这之前LRP就被提出来了，这篇文章是一个扩展。之前的那篇就没有细看。部分图片和解释参照了<a href="http://iphome.hhi.de/samek/pdf/MonXAI19.pdf" target="_blank" rel="noopener">http://iphome.hhi.de/samek/pdf/MonXAI19.pdf</a></p>
 <h3 id="Motivation-and-Introduction"><a href="#Motivation-and-Introduction" class="headerlink" title="Motivation and Introduction"></a>Motivation and Introduction</h3><p>LRP叫做 Layerwise-Relevance-Propagation</p>
-<img src="/2020/06/23/LRP-learning/image-20200212203554419.png" class="" title="image-20200212203554419">
+<img src="/2020/06/23/LRP-learning/image-20200212203554419.png" class title="image-20200212203554419">
 <p>我们已经训练好了一个网络，在这一层中，每一层的输出xj 都可以写成输入的函数 $x_{j}=g\left(\sum_{i} w_{i j} x_{i}+b\right)$， 然后给定一个图片，比如说是给定一个火车的图片，然后这个火车的图片分类的时候你已经知道它是一个火车了，你想观察这个网络为什么把它当成一个火车。<em>（我记得在本科的时候课上CNN的模型也能做出这种工作来，只不过他有很多池化层，不方便使用这种方法，今天seminar的时候我也问了她这个问题，她的回答大致就是不太容易之类的？）</em>Anyway， 神经网络是怎么看出这个图是火车的呢？</p>
-<img src="/2020/06/23/LRP-learning/train.png" class="" title="train">
+<img src="/2020/06/23/LRP-learning/train.png" class title="train">
 <p>大致就是这个样子。</p>
 <p>然后继续理解$f(x)$ 中，f代表我的神经网络，也就是分类器，x代表这张图片，那$f(x)$就代表分类的结果火车了，n然后我们可以有如下的表达式： $f(x) \approx \sum_{p} R_{p}^{(1)}$。 这里p就是代表所有的pixel 然后，$R_p$代表的就是每一个pixel的相关系数。然后就可以生成像这样的<em>heatmap</em>。</p>
 <p>那怎么得到这个$R_p$ 呢，可以看一下最上面这个图，思想和反向传播有点类似，如果我们已经知道了$l+1$层的相关系数，我们可以把第$l+1$层的信息分解那么就有$R_{j}^{(l+1)}=\sum_{i \in(l)} R_{i \leftarrow j}^{(l, l+1)}$，也就是说把后面一层的信息分解传给前面，这样的话就可以写出第$l$层的表达式$R_{i}^{(l)}=\sum_{j \in(l+1)} R_{i \hookleftarrow j}^{(l, l+1)}$。</p>
@@ -252,7 +252,7 @@
 <p>首先发现遗漏了一个明显但关键的信息，就是每一层的相关系数和都是相同的，这点很好理解。</p>
 <p>$f(x)=\cdots=\sum_{d \in l+1} R_{d}^{(l+1)}=\sum_{d \in l} R_{d}^{(l)}=\cdots=\sum_{d} R_{d}^{(1)}$</p>
 <p>文章里的推导还是挺好理解的，</p>
-<img src="/2020/06/23/LRP-learning/image-20200212220636748.png" class="" title="image-20200212220636748">
+<img src="/2020/06/23/LRP-learning/image-20200212220636748.png" class title="image-20200212220636748">
 <p>上图是我们的网络，在计算节点7的时候，是4,5,6节点传入的信息，通过$w_{47},w_{57},w_{67}$</p>
 <p>我们注意到$R_{7}^{(3)}=R_{4 \leftarrow 7}^{(2,3)}+R_{5 \pm 7}^{(2,3)}+R_{6 \pm 7}^{(2,3)}$</p>
 <p>那么就可以把 R_7 写成$R_{7}^{(3)}=R_{7}^{(3)} \frac{a_{4} w_{47}}{\sum_{i=4,5,6} a_{i} w_{i 7}}+R_{7}^{(3)} \frac{a_{5} w_{57}}{\sum_{i=4,5,6} a_{i} w_{i 7}}<br>+R_{7}^{(3)} \frac{a_{6} w_{67}}{\sum_{i=4,5,6} a_{i} w_{i 7}}$</p>
@@ -263,7 +263,7 @@
 <p>然后定义了两种规则，第一种是$\epsilon - rule$，就是对应我们上面这个具体的例子，只不过加了一个$\epsilon$项，</p>
 <p>$R_{i \leftarrow j}^{(l, l+1)}=\frac{z_{i j}}{z_{j}+\epsilon \cdot \operatorname{sign}\left(z_{j}\right)} R_{j}^{(l+1)}$</p>
 <p>加它的目的是为了防止分母为0，然后还有各种别的定义</p>
-<img src="/2020/06/23/LRP-learning/image-20200212221801992.png" class="" title="image-20200212221801992">
+<img src="/2020/06/23/LRP-learning/image-20200212221801992.png" class title="image-20200212221801992">
 <p>好，那么LRP就大致理解了。在下一篇里将实际操作一下(可能没有下一篇了)</p>
 <h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ol>
 <li>Bach, Sebastian, et al. “On pixel-wise explanations for non-linear classifier decisions by layer-wise relevance propagation.” <em>PloS one</em> 10.7 (2015).</li>
