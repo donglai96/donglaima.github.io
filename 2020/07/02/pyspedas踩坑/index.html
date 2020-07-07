@@ -28,7 +28,7 @@
 <meta property="og:description" content="这篇是pyspedas的踩坑记">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-07-02T23:46:28.000Z">
-<meta property="article:modified_time" content="2020-07-03T00:50:59.315Z">
+<meta property="article:modified_time" content="2020-07-07T08:50:28.227Z">
 <meta property="article:author" content="Donglai">
 <meta property="article:tag" content="spedas">
 <meta property="article:tag" content="pyspedas">
@@ -205,10 +205,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2020-07-02 16:46:28 / Modified: 17:50:59" itemprop="dateCreated datePublished" datetime="2020-07-02T16:46:28-07:00">2020-07-02</time>
+              <time title="Created: 2020-07-02 16:46:28" itemprop="dateCreated datePublished" datetime="2020-07-02T16:46:28-07:00">2020-07-02</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-07-07 01:50:28" itemprop="dateModified" datetime="2020-07-07T01:50:28-07:00">2020-07-07</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -240,6 +246,14 @@
         <p>这篇是pyspedas的踩坑记</p>
 <a id="more"></a>
 <h2 id="Qt-was-not-imported"><a href="#Qt-was-not-imported" class="headerlink" title="Qt was not imported"></a>Qt was not imported</h2><p>重装pyqt5，在win10下面qt会出现版本问题。有的时候会发现自己的anaconda-navigator打不开了。这时候就卸载一下PyQT5 然后pip重装一下。就好了。好像在新环境里装pyspedas的时候，qt会出问题，有待进一步测试。</p>
+<h2 id="Van-Allen-Probe-data"><a href="#Van-Allen-Probe-data" class="headerlink" title="Van Allen Probe data"></a>Van Allen Probe data</h2><p>RBSP 的data有很多问题，比如pyspedas会用到cda web中的数据，16年magnetometer l3 就会有一两天他没有删除掉已经有的version，下载的时候就会把一天两个version的data都下载下来，然后get_data 就没有办法get</p>
+<p>有一些函数没有写到init file 里。已经pull了request，但是可能是因为他们那些函数的test没有写完。</p>
+<h2 id="Tplot"><a href="#Tplot" class="headerlink" title="Tplot"></a>Tplot</h2><p>当用tplot存储的时候，最好每次都restore一下，因为每次都会存进memory 值，然后你再read出来就会变成两次</p>
+<h2 id="Epoch"><a href="#Epoch" class="headerlink" title="Epoch"></a>Epoch</h2><p>在自己做时间转换的时候</p>
+<p>请使用</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    <span class="keyword">from</span> cdflib.epochs_astropy <span class="keyword">import</span> CDFAstropy <span class="keyword">as</span> cdfepoch</span><br><span class="line"><span class="keyword">except</span>:</span><br><span class="line">    <span class="keyword">from</span> cdflib.epochs <span class="keyword">import</span> CDFepoch <span class="keyword">as</span> cdfepoch</span><br></pre></td></tr></table></figure>
+<p>不要用cdflib里面的epoch</p>
+<p>因为leaptime改过了！！！！</p>
 
     </div>
 
@@ -325,7 +339,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Qt-was-not-imported"><span class="nav-number">1.</span> <span class="nav-text">Qt was not imported</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Qt-was-not-imported"><span class="nav-number">1.</span> <span class="nav-text">Qt was not imported</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Van-Allen-Probe-data"><span class="nav-number">2.</span> <span class="nav-text">Van Allen Probe data</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Tplot"><span class="nav-number">3.</span> <span class="nav-text">Tplot</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Epoch"><span class="nav-number">4.</span> <span class="nav-text">Epoch</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
