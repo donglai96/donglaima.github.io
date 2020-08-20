@@ -33,10 +33,10 @@
 <meta property="og:image" content="http://yoursite.com/2020/07/03/PIC-Skeleton-Code-%E5%AD%A6%E4%B9%A0/image-20200703022503182.png">
 <meta property="og:image" content="http://yoursite.com/2020/07/03/PIC-Skeleton-Code-%E5%AD%A6%E4%B9%A0/image-20200703022708999.png">
 <meta property="article:published_time" content="2020-07-03T07:28:51.000Z">
-<meta property="article:modified_time" content="2020-08-06T09:00:05.789Z">
+<meta property="article:modified_time" content="2020-08-07T09:05:08.359Z">
 <meta property="article:author" content="Donglai">
-<meta property="article:tag" content="PIC">
 <meta property="article:tag" content="plasma">
+<meta property="article:tag" content="PIC">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://yoursite.com/2020/07/03/PIC-Skeleton-Code-%E5%AD%A6%E4%B9%A0/image-20200703012823291.png">
 
@@ -219,7 +219,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-08-06 02:00:05" itemprop="dateModified" datetime="2020-08-06T02:00:05-07:00">2020-08-06</time>
+                <time title="Modified: 2020-08-07 02:05:08" itemprop="dateModified" datetime="2020-08-07T02:05:08-07:00">2020-08-07</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -299,6 +299,7 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">Initial Field, Kinetic and Total Energies:</span><br><span class="line">0.1199318E-07 0.9329118E+04 0.9329118E+04</span><br><span class="line">ntime =          100</span><br><span class="line">Final Field, Kinetic and Total Energies:</span><br><span class="line">0.5116882E+02 0.9277939E+04 0.9329108E+04</span><br><span class="line"></span><br><span class="line">deposit time =    2.71399855E-03</span><br><span class="line">guard time =    4.50000116E-05</span><br><span class="line">solver time =    6.60000151E-05</span><br><span class="line">fft time =    4.88998892E-04</span><br><span class="line">push time =    6.65099919E-03</span><br><span class="line">sort time =    1.88000005E-04</span><br><span class="line">total solver time =    5.99998923E-04</span><br><span class="line">total particle time =    9.55299754E-03</span><br><span class="line">total time =    1.01529965E-02</span><br><span class="line"></span><br><span class="line">Push Time (nsec) =    3.60839796    </span><br><span class="line">Deposit Time (nsec) =    1.47243845    </span><br><span class="line">Sort Time (nsec) =   0.101996534    </span><br><span class="line">Total Particle Time (nsec) =    5.18283272</span><br></pre></td></tr></table></figure>
 <p>但是这个东西实在是不好可视化，我决定开始用julia 重写一下这部分的code</p>
 <p>开一个新坑是关于Julia的</p>
+<h2 id="Julia"><a href="#Julia" class="headerlink" title="Julia"></a>Julia</h2><p>Julia 的单重派发和多重派发</p>
 
     </div>
 
@@ -308,8 +309,8 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/PIC/" rel="tag"># PIC</a>
               <a href="/tags/plasma/" rel="tag"># plasma</a>
+              <a href="/tags/PIC/" rel="tag"># PIC</a>
           </div>
 
         
@@ -384,7 +385,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#7-3"><span class="nav-number">1.</span> <span class="nav-text">7.3</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#PIC-1"><span class="nav-number">1.1.</span> <span class="nav-text">PIC 1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在windows下启用linux子系统"><span class="nav-number">1.2.</span> <span class="nav-text">在windows下启用linux子系统</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-6"><span class="nav-number">2.</span> <span class="nav-text">8.6</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1d-code"><span class="nav-number">2.1.</span> <span class="nav-text">1d code</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#7-3"><span class="nav-number">1.</span> <span class="nav-text">7.3</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#PIC-1"><span class="nav-number">1.1.</span> <span class="nav-text">PIC 1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在windows下启用linux子系统"><span class="nav-number">1.2.</span> <span class="nav-text">在windows下启用linux子系统</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-6"><span class="nav-number">2.</span> <span class="nav-text">8.6</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1d-code"><span class="nav-number">2.1.</span> <span class="nav-text">1d code</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Julia"><span class="nav-number">3.</span> <span class="nav-text">Julia</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -400,7 +401,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-count">12</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -413,7 +414,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-count">15</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
