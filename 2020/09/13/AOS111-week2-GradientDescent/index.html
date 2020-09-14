@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="本文为我设计的AOS111的in-class coding, week 1是关于gradient descent的。 有一段很棒的code展示了梯度下降是如何一步一步下降的，但是在blog上不太知道怎么弄上来交互式的图片结果，回头要看一下这个">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AOS111-week2-GradientDescent">
+<meta property="og:url" content="http://yoursite.com/2020/09/13/AOS111-week2-GradientDescent/index.html">
+<meta property="og:site_name" content="Donglai&#39;s Blog">
+<meta property="og:description" content="本文为我设计的AOS111的in-class coding, week 1是关于gradient descent的。 有一段很棒的code展示了梯度下降是如何一步一步下降的，但是在blog上不太知道怎么弄上来交互式的图片结果，回头要看一下这个">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://yoursite.com/2020/09/13/AOS111-week2-GradientDescent/output_3_0.png">
+<meta property="og:image" content="http://yoursite.com/2020/09/13/AOS111-week2-GradientDescent/output_6_1.png">
+<meta property="og:image" content="http://yoursite.com/2020/09/13/AOS111-week2-GradientDescent/output_18_0.png">
+<meta property="article:published_time" content="2020-09-14T02:06:09.000Z">
+<meta property="article:modified_time" content="2020-09-14T02:17:09.169Z">
+<meta property="article:author" content="Donglai">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="AOS111">
+<meta property="article:tag" content="Machine Learning">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2020/09/13/AOS111-week2-GradientDescent/output_3_0.png">
+
+<link rel="canonical" href="http://yoursite.com/2020/09/13/AOS111-week2-GradientDescent/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>AOS111-week2-GradientDescent | Donglai's Blog</title>
+  
+    <script>
+      function sendPageView() {
+        if (CONFIG.hostname !== location.hostname) return;
+        var uid = localStorage.getItem('uid') || (Math.random() + '.' + Math.random());
+        localStorage.setItem('uid', uid);
+        navigator.sendBeacon('https://www.google-analytics.com/collect', new URLSearchParams({
+          v  : 1,
+          tid: 'UA-171415387-1',
+          cid: uid,
+          t  : 'pageview',
+          dp : encodeURIComponent(location.pathname)
+        }));
+      }
+      document.addEventListener('pjax:complete', sendPageView);
+      sendPageView();
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Donglai's Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/09/13/AOS111-week2-GradientDescent/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/donglai_3.png">
+      <meta itemprop="name" content="Donglai">
+      <meta itemprop="description" content="Be a part of it.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Donglai's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          AOS111-week2-GradientDescent
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2020-09-13 19:06:09 / Modified: 19:17:09" itemprop="dateCreated datePublished" datetime="2020-09-13T19:06:09-07:00">2020-09-13</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/AOS111/" itemprop="url" rel="index"><span itemprop="name">AOS111</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>本文为我设计的AOS111的in-class coding, week 1是关于gradient descent的。</p>
+<p>有一段很棒的code展示了梯度下降是如何一步一步下降的，但是在blog上不太知道怎么弄上来交互式的图片结果，回头要看一下这个</p>
+<a id="more"></a>
+<h2 id="Goals"><a href="#Goals" class="headerlink" title="Goals"></a>Goals</h2><ul>
+<li>[ ] Regularization(Ridge) for normal equation</li>
+<li>[ ] Gradient descent</li>
+<li>[ ] Regression with sklearn</li>
+</ul>
+<h2 id="Ridge-regularization-for-normal-equation"><a href="#Ridge-regularization-for-normal-equation" class="headerlink" title="Ridge regularization for normal equation"></a>Ridge regularization for normal equation</h2><h3 id="Create-a-nonlinear-data-base"><a href="#Create-a-nonlinear-data-base" class="headerlink" title="Create a nonlinear data base"></a>Create a nonlinear data base</h3><p>We will use the same dataset with last week to check the performance.<br>We will also use some functions in week1’s notebook</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Prepare the dataset</span></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</span><br><span class="line"></span><br><span class="line"><span class="comment"># Prepare the function of 'fake' dataset</span></span><br><span class="line">m = <span class="number">100</span>  <span class="comment"># number of total samples</span></span><br><span class="line"></span><br><span class="line">test_size = <span class="number">0.2</span>  <span class="comment"># test dataset ~ 20%</span></span><br><span class="line"></span><br><span class="line">x = np.random.rand(m)  <span class="comment"># get random data(x_0,x_1,..., x_&#123;m-1&#125;)</span></span><br><span class="line"></span><br><span class="line">f = np.sin(<span class="number">4</span> * x)</span><br><span class="line"></span><br><span class="line">noise = np.random.normal(<span class="number">0</span>, <span class="number">0.2</span>, x.shape)  <span class="comment"># add some noise</span></span><br><span class="line"></span><br><span class="line">y = f + noise</span><br><span class="line"></span><br><span class="line"><span class="comment"># Split the dataset</span></span><br><span class="line">x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=test_size)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Plot the result</span></span><br><span class="line">p_train = plt.scatter(x_train, y_train, marker=<span class="string">'+'</span>, c=<span class="string">'b'</span>, label=<span class="string">'train'</span>)</span><br><span class="line">p_test = plt.scatter(x_test, y_test, marker=<span class="string">'o'</span>, c=<span class="string">'r'</span>, label=<span class="string">'test'</span>)</span><br><span class="line"></span><br><span class="line">x_line = np.linspace(<span class="number">0</span>, <span class="number">1</span>)</span><br><span class="line">p_real = plt.plot(x_line, np.sin(<span class="number">4</span> * x_line),</span><br><span class="line">                  label=<span class="string">'real function'</span>)  <span class="comment"># plot the real sin(4x)</span></span><br><span class="line">plt.legend()</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<img src="/2020/09/13/AOS111-week2-GradientDescent/output_3_0.png" class="" title="png">
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#Some functions last week</span></span><br><span class="line"><span class="comment">##############################</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">addpoly</span><span class="params">(x, n)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    @x: array of training samples</span></span><br><span class="line"><span class="string">    @n: order of the input  </span></span><br><span class="line"><span class="string">    @return: array of X </span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line"></span><br><span class="line">    x_vec = np.zeros((len(x), n + <span class="number">1</span>))</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(n + <span class="number">1</span>):</span><br><span class="line">        x_vec[:, i] = x**i</span><br><span class="line">    <span class="keyword">return</span> x_vec</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">outexpression</span><span class="params">(theta)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    @theta: The theta hat,remember the theta is matrix</span></span><br><span class="line"><span class="string">    #return: output an expression of the theta</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    theta_array = np.array(theta).squeeze()</span><br><span class="line"></span><br><span class="line">    expression = <span class="string">'y = '</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(theta_array) - <span class="number">1</span>, <span class="number">-1</span>, <span class="number">-1</span>):</span><br><span class="line">        expression_new = <span class="string">"&#123;:.2f&#125;"</span> + <span class="string">"*x^"</span> + <span class="string">"&#123;:.0f&#125;"</span></span><br><span class="line"></span><br><span class="line">        expression += expression_new.format(theta_array[i], i)</span><br><span class="line">        <span class="keyword">if</span> i <span class="keyword">is</span> <span class="keyword">not</span> <span class="number">0</span>:</span><br><span class="line">            expression += <span class="string">'+'</span></span><br><span class="line">    <span class="keyword">return</span> expression</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">##############################</span></span><br></pre></td></tr></table></figure>
+<h3 id="Solve-normal-equation"><a href="#Solve-normal-equation" class="headerlink" title="Solve normal equation"></a>Solve normal equation</h3><p>The approxiamte ${\theta}$ is </p>
+<script type="math/tex; mode=display">\widehat{\boldsymbol{\theta}}=\left(\mathbf{X}^{T} \mathbf{X}\right)^{-1} \mathbf{X}^{T} \mathbf{Y}</script><p>We want to normalize the theta, so it won’t be that big like what we did in week1</p>
+<p>Ridge regularization</p>
+<script type="math/tex; mode=display">\widehat{\boldsymbol{\theta}}=\left(\mathbf{X}^{T} \mathbf{X} + \lambda \mathbf{A}\right)^{-1} \mathbf{X}^{T} \mathbf{Y}</script><p>Change the <em>solvenormal</em> function in last week and check the different performance!</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">##############################</span></span><br><span class="line"><span class="comment"># Your code starts here</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">solvenormal</span><span class="params">(X, Y, reg=<span class="string">'Ridge'</span>, lmda=<span class="number">0.1</span>)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    @X : design matrix X</span></span><br><span class="line"><span class="string">    @Y : design matrix Y</span></span><br><span class="line"><span class="string">    @reg: regularization method, including 'Ridge'</span></span><br><span class="line"><span class="string">          and 'None' right now</span></span><br><span class="line"><span class="string">    @lmda: lambda</span></span><br><span class="line"><span class="string">    @return: array of theta</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    n_1 = X.shape[<span class="number">1</span>]</span><br><span class="line">    <span class="keyword">if</span> reg <span class="keyword">is</span> <span class="string">'Ridge'</span>:</span><br><span class="line">        A = np.identity(n_1)  <span class="comment"># Generalize an identity array</span></span><br><span class="line">        A[<span class="number">0</span>][<span class="number">0</span>] = <span class="number">0</span></span><br><span class="line">        theta = (X.T * X + lmda * A).I * X.T * Y</span><br><span class="line">    <span class="keyword">elif</span> reg <span class="keyword">is</span> <span class="string">'None'</span>:</span><br><span class="line">        theta = (X.T * X).I * X.T * Y</span><br><span class="line">    <span class="keyword">return</span> theta</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">##############################</span></span><br><span class="line"></span><br><span class="line">Y = y_train.reshape(len(y_train), <span class="number">1</span>)</span><br><span class="line">x_plot = np.linspace(<span class="number">0</span>, <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Same code with last week</span></span><br><span class="line">order_max = <span class="number">16</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, order_max + <span class="number">1</span>, <span class="number">2</span>):</span><br><span class="line">    phi_vec = addpoly(x_train, i)</span><br><span class="line">    theta_i = solvenormal(np.matrix(phi_vec), Y)</span><br><span class="line">    print(outexpression(theta_i))</span><br><span class="line">    x_plot_vec = addpoly(x_plot, i)</span><br><span class="line">    plt.plot(x_plot, np.matrix(x_plot_vec) * theta_i, label=<span class="string">'order%d'</span> % i)</span><br><span class="line"></span><br><span class="line">p_train = plt.scatter(x_train, y_train, marker=<span class="string">'+'</span>, c=<span class="string">'b'</span>)</span><br><span class="line">p_test = plt.scatter(x_test, y_test, marker=<span class="string">'o'</span>, c=<span class="string">'r'</span>)</span><br><span class="line">plt.legend()</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<pre><code>y = -1.17*x^1+1.04*x^0
+y = -2.09*x^3+-1.17*x^2+1.95*x^1+0.41*x^0
+y = 0.07*x^5+-0.83*x^4+-1.42*x^3+-0.94*x^2+1.74*x^1+0.42*x^0
+y = 0.77*x^7+0.14*x^6+-0.54*x^5+-1.17*x^4+-1.49*x^3+-0.80*x^2+1.82*x^1+0.40*x^0
+y = 0.80*x^9+0.49*x^8+0.11*x^7+-0.32*x^6+-0.80*x^5+-1.23*x^4+-1.37*x^3+-0.64*x^2+1.80*x^1+0.40*x^0
+y = 0.66*x^11+0.51*x^10+0.34*x^9+0.12*x^8+-0.16*x^7+-0.48*x^6+-0.84*x^5+-1.17*x^4+-1.25*x^3+-0.55*x^2+1.75*x^1+0.40*x^0
+y = 0.49*x^13+0.43*x^12+0.36*x^11+0.26*x^10+0.13*x^9+-0.03*x^8+-0.24*x^7+-0.51*x^6+-0.82*x^5+-1.11*x^4+-1.18*x^3+-0.51*x^2+1.71*x^1+0.40*x^0
+y = 0.34*x^15+0.33*x^14+0.30*x^13+0.27*x^12+0.22*x^11+0.15*x^10+0.05*x^9+-0.08*x^8+-0.26*x^7+-0.50*x^6+-0.79*x^5+-1.06*x^4+-1.14*x^3+-0.49*x^2+1.68*x^1+0.40*x^0
+</code></pre><img src="/2020/09/13/AOS111-week2-GradientDescent/output_6_1.png" class="" title="png">
+<h4 id="Tips"><a href="#Tips" class="headerlink" title="Tips"></a>Tips</h4><p>Writing scalable code means that if a new requirements come to you, in how much of a change, you can adapt to that requirement. The lesser the lines required, the more scalable the code is。</p>
+<p>You could see in this way, you can write different regularization methods in one function instead of a new one.<br>You could also use <em>python decorator</em> if you want to slightly change your function.</p>
+<h2 id="Gradient-descent"><a href="#Gradient-descent" class="headerlink" title="Gradient descent"></a>Gradient descent</h2><h3 id="Compute-the-Cost-J-theta"><a href="#Compute-the-Cost-J-theta" class="headerlink" title="Compute the Cost $J(\theta)$"></a>Compute the Cost $J(\theta)$</h3><p>The objective of regression is to minimize the cost function</p>
+<script type="math/tex; mode=display">J(\theta)=\frac{1}{2 m} \sum_{i=1}^{m}\left(h_{\theta}\left(x^{(i)}\right)-y^{(i)}\right)^{2}</script><p>where $h_{\theta}(x)$ is the hypothesis and given by the linear model</p>
+<script type="math/tex; mode=display">h_{\theta}(x)=\theta^{T} x=\theta_{0}+\theta_{1} x_{1}</script><p>You could also evaluate your model performance on the test dataset with this function $J(\theta)$</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">##############################</span></span><br><span class="line"><span class="comment"># Your code starts here</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">costfunction</span><span class="params">(X, y, theta)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    @X : Input matrix X</span></span><br><span class="line"><span class="string">    @y : Output y</span></span><br><span class="line"><span class="string">    @theta : theta array</span></span><br><span class="line"><span class="string">    @return: cost value</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    m = len(y)</span><br><span class="line">    y_pred = X.dot(theta)</span><br><span class="line">    error = (y_pred - y)**<span class="number">2</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span> / (<span class="number">2</span> * m) * np.sum(error)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">##############################</span></span><br></pre></td></tr></table></figure>
+<h3 id="Gradient-descent-algorithm"><a href="#Gradient-descent-algorithm" class="headerlink" title="Gradient descent algorithm"></a>Gradient descent algorithm</h3><p>Minimize the cost function $J(\theta)$ by updating the below equation and repeat until convergence </p>
+<script type="math/tex; mode=display">\theta_{j}:=\theta_{j}-\alpha \frac{1}{m} \sum_{i=1}^{m}\left(h_{\theta}\left(x^{(i)}\right)-y^{(i)}\right) x_{j}^{(i)}</script><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">##############################</span></span><br><span class="line"><span class="comment"># Your code starts here</span></span><br><span class="line"><span class="comment"># You won't need np.matrix here</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">gradientdescent</span><span class="params">(X, y, theta, alpha, iterations)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    @X: Input matrix X</span></span><br><span class="line"><span class="string">    @y: Output y</span></span><br><span class="line"><span class="string">    @theta: theta array</span></span><br><span class="line"><span class="string">    @alpha: parameters for gradient descent</span></span><br><span class="line"><span class="string">    @iterations: steps of gradient descent</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    @return :</span></span><br><span class="line"><span class="string">        @theta: theta array which would been updated</span></span><br><span class="line"><span class="string">        @costs: history of costs</span></span><br><span class="line"><span class="string">        @theta_his: history of theta</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    m = len(y)</span><br><span class="line">    costs = []</span><br><span class="line">    theta_his = []  <span class="comment"># Store the history theta</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(iterations):</span><br><span class="line">        y_pred = X.dot(theta)</span><br><span class="line">        </span><br><span class="line">        error = np.dot(X.transpose(), (y_pred - y))</span><br><span class="line"></span><br><span class="line">        theta -= alpha * <span class="number">1</span> / m * error</span><br><span class="line"></span><br><span class="line">        cost_step = costfunction(X, y, theta)</span><br><span class="line"></span><br><span class="line">        costs.append(cost_step)</span><br><span class="line">        theta_tuple = (theta[<span class="number">0</span>,<span class="number">0</span>],theta[<span class="number">1</span>,<span class="number">0</span>])</span><br><span class="line">        theta_his.append(theta_tuple)</span><br><span class="line">        </span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> theta, costs, theta_his</span><br><span class="line"></span><br><span class="line">X_input = (addpoly(x_train, <span class="number">1</span>))</span><br><span class="line">y_target = y_train.reshape(len(y_train), <span class="number">1</span>)</span><br><span class="line">theta = np.zeros((<span class="number">2</span>, <span class="number">1</span>))</span><br><span class="line"></span><br><span class="line">theta, costs, theta_his = gradientdescent(X_input,</span><br><span class="line">                                           y_target,</span><br><span class="line">                                           theta,</span><br><span class="line">                                           alpha=<span class="number">0.01</span>,</span><br><span class="line">                                           iterations=<span class="number">5000</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Use theta_his to calculate the error on test dataset</span></span><br><span class="line"></span><br><span class="line">tests = []</span><br><span class="line">X_test = (addpoly(x_test, <span class="number">1</span>))</span><br><span class="line">y_test = y_test.reshape(len(y_test), <span class="number">1</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(len(theta_his)):</span><br><span class="line">    theta_i = [[theta_his[i][<span class="number">0</span>]],[theta_his[i][<span class="number">1</span>]]]</span><br><span class="line">    test_error = costfunction(X_test, y_test, theta_i)</span><br><span class="line">    tests.append(test_error)</span><br></pre></td></tr></table></figure>
+<h3 id="Gradient-descent-procedure"><a href="#Gradient-descent-procedure" class="headerlink" title="Gradient descent procedure"></a>Gradient descent procedure</h3><p>Now let’s see how gradient descent works during these steps!</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line">%matplotlib notebook</span><br><span class="line"><span class="keyword">from</span> ipywidgets <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line">fig = plt.figure(figsize=(<span class="number">10</span>, <span class="number">5</span>))</span><br><span class="line"><span class="comment">#plot the cost</span></span><br><span class="line">ax_cost = fig.add_subplot(<span class="number">121</span>)</span><br><span class="line"></span><br><span class="line">ax_gradient = fig.add_subplot(<span class="number">122</span>)</span><br><span class="line">plt.ion()</span><br><span class="line"></span><br><span class="line">fig.show()</span><br><span class="line">fig.canvas.draw()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">update</span><span class="params">(i=<span class="number">0</span>)</span>:</span></span><br><span class="line">    ax_cost.clear()</span><br><span class="line">    ax_gradient.clear()</span><br><span class="line">    ax_cost.plot(costs[<span class="number">0</span>:i], label=<span class="string">'train'</span>)</span><br><span class="line">    ax_cost.plot(tests[<span class="number">0</span>:i], label=<span class="string">'test'</span>)</span><br><span class="line">    ax_cost.set_xlabel(<span class="string">'steps'</span>)</span><br><span class="line">    ax_cost.set_ylabel(<span class="string">'cost'</span>)</span><br><span class="line">    ax_cost.legend()</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Trace of gradient descent</span></span><br><span class="line">    theta_0 = np.array([x[<span class="number">0</span>] <span class="keyword">for</span> x <span class="keyword">in</span> theta_his[<span class="number">0</span>:i]]).squeeze()</span><br><span class="line">    theta_1 = np.array([x[<span class="number">1</span>] <span class="keyword">for</span> x <span class="keyword">in</span> theta_his[<span class="number">0</span>:i]]).squeeze()</span><br><span class="line">    print(<span class="string">"Steps:"</span>, i)</span><br><span class="line">    print(<span class="string">"Costs:"</span>, costs[i])</span><br><span class="line">    <span class="comment">#theta_i = [theta_0[i]]</span></span><br><span class="line">    theta_i = [[theta_his[i][<span class="number">0</span>]], [theta_his[i][<span class="number">1</span>]]]</span><br><span class="line">    print(<span class="string">"result function"</span>, outexpression(theta_i))</span><br><span class="line">    ax_gradient.plot(theta_0, theta_1, <span class="string">'r'</span>)</span><br><span class="line"></span><br><span class="line">    ax_gradient.set_xlabel(<span class="string">'theta_0'</span>)</span><br><span class="line">    ax_gradient.set_ylabel(<span class="string">'theta_1'</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Make the background</span></span><br><span class="line">    grid_num = <span class="number">100</span></span><br><span class="line">    xx = ax_gradient.get_xlim()</span><br><span class="line">    yy = ax_gradient.get_ylim()</span><br><span class="line">    x = np.linspace(xx[<span class="number">0</span>], xx[<span class="number">1</span>], num=grid_num)</span><br><span class="line">    y = np.linspace(yy[<span class="number">0</span>], yy[<span class="number">1</span>], num=grid_num)</span><br><span class="line">    X, Y = np.meshgrid(x, y)</span><br><span class="line">    cost_values = np.zeros((grid_num, grid_num))</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(grid_num):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(grid_num):</span><br><span class="line">            t = np.array([[x[i]], [y[j]]])</span><br><span class="line">            cost_values[i, j] = costfunction(X_input, y_target, t)</span><br><span class="line"></span><br><span class="line">    cost_back = ax_gradient.contourf(X, Y, cost_values.T)</span><br><span class="line">    fig.canvas.draw()</span><br><span class="line"></span><br><span class="line">    <span class="comment">#fig.colorbar(cost_back,ax = ax_gradient)</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">interact(update, i=(<span class="number">1</span>, <span class="number">4000</span>))</span><br></pre></td></tr></table></figure>
+<pre><code>&lt;IPython.core.display.Javascript object&gt;
+</code></pre><h2 id="Regression-with-sklearn"><a href="#Regression-with-sklearn" class="headerlink" title="Regression with sklearn"></a>Regression with sklearn</h2><p>You could see although we successfully reproduce the whole procedure of simple ridge regression, it’s still time consuming and not easily to use. There are various python package which help us to build the model.</p>
+<p>Let’s use scikit learn’s ridge regression package to do the same thing.<br>The website is <a href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.Ridge.html" target="_blank" rel="noopener">here</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> Ridge</span><br><span class="line"></span><br><span class="line">mymodel = Ridge(alpha=<span class="number">0.1</span>)</span><br><span class="line"></span><br><span class="line">mymodel.fit(X_input,y_target)</span><br><span class="line">mymodel.get_params()</span><br><span class="line">print(mymodel.coef_)</span><br><span class="line">print(mymodel.intercept_)</span><br></pre></td></tr></table></figure>
+<pre><code>[[ 0.         -0.83429268]]
+[0.83758577]
+</code></pre><p>You could notice there is a 0 in the coef, it’s because when we made X_input, we add  column $ 1 (x^0)$ in the input.<br>In the scikit learn linear model</p>
+<script type="math/tex; mode=display">\hat{y}(w, x)=w_{0}+w_{1} x_{1}+\ldots+w_{p} x_{p}</script><p> Across the module, they designate the vector $w=\left(w_{1}, \ldots, w_{p}\right)$ as coef_ and $w_{0}$ as intercept_</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">%matplotlib inline</span><br><span class="line">x_plot = np.linspace(<span class="number">0</span>, <span class="number">1</span>)</span><br><span class="line">y_predict = mymodel.predict(addpoly(x_plot,<span class="number">1</span>))</span><br><span class="line">predict = plt.plot(x_line,y_predict)</span><br><span class="line">p_train = plt.scatter(x_train, y_train, marker=<span class="string">'+'</span>, c=<span class="string">'b'</span>)</span><br><span class="line">p_test = plt.scatter(x_test, y_test, marker=<span class="string">'o'</span>, c=<span class="string">'r'</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<img src="/2020/09/13/AOS111-week2-GradientDescent/output_18_0.png" class="" title="png">
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/python/" rel="tag"># python</a>
+              <a href="/tags/AOS111/" rel="tag"># AOS111</a>
+              <a href="/tags/Machine-Learning/" rel="tag"># Machine Learning</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/09/13/AOS111-week1-LinearRegression/" rel="prev" title="AOS111-week1-LinearRegression">
+      <i class="fa fa-chevron-left"></i> AOS111-week1-LinearRegression
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/09/13/AOS111-week3-LogisticRegression/" rel="next" title="AOS111-week3-LogisticRegression">
+      AOS111-week3-LogisticRegression <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Goals"><span class="nav-number">1.</span> <span class="nav-text">Goals</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Ridge-regularization-for-normal-equation"><span class="nav-number">2.</span> <span class="nav-text">Ridge regularization for normal equation</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Create-a-nonlinear-data-base"><span class="nav-number">2.1.</span> <span class="nav-text">Create a nonlinear data base</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Solve-normal-equation"><span class="nav-number">2.2.</span> <span class="nav-text">Solve normal equation</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Tips"><span class="nav-number">2.2.1.</span> <span class="nav-text">Tips</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Gradient-descent"><span class="nav-number">3.</span> <span class="nav-text">Gradient descent</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Compute-the-Cost-J-theta"><span class="nav-number">3.1.</span> <span class="nav-text">Compute the Cost $J(\theta)$</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Gradient-descent-algorithm"><span class="nav-number">3.2.</span> <span class="nav-text">Gradient descent algorithm</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Gradient-descent-procedure"><span class="nav-number">3.3.</span> <span class="nav-text">Gradient descent procedure</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Regression-with-sklearn"><span class="nav-number">4.</span> <span class="nav-text">Regression with sklearn</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Donglai"
+      src="/images/donglai_3.png">
+  <p class="site-author-name" itemprop="name">Donglai</p>
+  <div class="site-description" itemprop="description">Be a part of it.</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Donglai</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '7807102743034f5e9882',
+      clientSecret: 'c4d40610ffd0cb2437f97aed7b9324b9fba05b02',
+      repo        : 'BlogComment',
+      owner       : 'donglai96',
+      admin       : ['donglai96'],
+      id          : '847bfe0558db1da5734db21703beee29',
+        language: '',
+      distractionFreeMode: false
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false}});</script></body>
+</html>
